@@ -15,18 +15,16 @@ public:
 
     void getPrevious(); // obtener el elemento anterior al nodo actual
 
-    void addFront(data); // Agregar un elemeto al inicio de la lista 
+    void agregarTitular(string pData, int position); //Agregar titular a la lista en determinada posición
 
-    void addBack(data); // Agregar un elemeto al final de la lista
+    void remove(string pData); // Eliminar un elemeto de la lista
 
-    void remove(data); // Eliminar un elemeto de la lista
+    int largoLista (int num); // Determinar la cantidad de elementos
 
-    int largoLista (); // Determinar la cantidad de elementos
-
-    void  searchTitular(data); // Buscar titulares en específico
+    void  searchTitular(string pData); // Buscar titulares en específico
 
     void searchPosition(int pIndex); // Buscar la posición de un titular en específico
 
-    void mostrarTitular(data); // Mostrar titulares luego de que se buscan
+    void mostrarTitular(string pData); // Mostrar titulares luego de que se buscan
 
 }
