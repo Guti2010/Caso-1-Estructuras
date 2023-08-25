@@ -29,5 +29,4 @@ public:
 
     void mostrarTitular(data); // Mostrar titulares luego de que se buscan
 
-    void crearLista(data); // Crear el conjunto de 
 }
