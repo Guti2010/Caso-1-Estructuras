@@ -37,16 +37,17 @@ public:
         
     }
 
-    bool buscar(const string& palabraABuscar, std::string& resultado) {
+    bool buscar(const string& palabraABuscar, string& resultado) {
     Nodo* actual = cabeza;
     while (actual) {
         // Buscar si la palabra está contenida en el string del nodo
-        if (actual->dato.find(palabraABuscar) != std::string::npos) {
+        if (actual->dato.find(palabraABuscar) != string::npos) {
             resultado = actual->dato;
             return true;
         }
         actual = actual->siguiente;
     }
+    cout << "No se encontraron elementos con las palabras dadas" << endl;
     return false;
 }
 
@@ -96,7 +97,6 @@ public:
 
     void reubicar(int posicionInicial, int offset) {
         int nuevaPosicion = posicionInicial - offset;
-        
 
         Nodo* actual = cabeza;
         for (int i = 1; i < posicionInicial; ++i) {
@@ -138,7 +138,7 @@ public:
 
     
 
-    ~ListaDobleEnlazada() {
+    ~ListaDobleEnlazada() { //getNext
         Nodo* actual = cabeza;
         while (actual) {
             Nodo* siguiente = actual->siguiente;
@@ -149,25 +149,25 @@ public:
 };
 
 
-void insertar(ListaDobleEnlazada &lista, const string &dato){
+void insertar(ListaDobleEnlazada &lista, const string &dato){ //insertar dato por dato
    lista.agregar(dato);
    lista.contador++;
    return;
 }
 
-void topfive(ListaDobleEnlazada& lista){
+void topfive(ListaDobleEnlazada& lista){ //obtener top 5 de los elementos
    cout << "Top 5 elementos más relevantes:" << endl;
    lista.top5();
    return;
 }
 
-void getAll(ListaDobleEnlazada& lista){
+void getAll(ListaDobleEnlazada& lista){ //mostraar todos los elementos de la lista
    cout << "Todos los elementos de la lista:" << endl;
    lista.recorrer();
    return;
 }
 
-void buscarPorPalabras(ListaDobleEnlazada& lista) {
+void buscarPorPalabras(ListaDobleEnlazada& lista) { //pedir al usuario palabra por palabra una lista de estas para buscar elementos que las contengan
     vector<string> palabrasABuscar;
 
     cout << "Ingrese las palabras que desea buscar (terminar con 'Listo'):" << endl;
@@ -187,7 +187,7 @@ void buscarPorPalabras(ListaDobleEnlazada& lista) {
 }
 
 
-void eliminarPorPalabras(ListaDobleEnlazada& lista) {
+void eliminarPorPalabras(ListaDobleEnlazada& lista) { //pedir al usuario palabra por palabra una lista de estas para eliminar elementos que las contengan
     vector<string> palabrasABuscar;
 
     cout << "Ingrese las palabras que desea buscar para eliminar elementos (terminar con 'Listo'):" << endl;
@@ -195,7 +195,6 @@ void eliminarPorPalabras(ListaDobleEnlazada& lista) {
     while (cin >> palabra && palabra != "Listo") {
         palabrasABuscar.push_back(palabra);
     }
-    cout << "Elementos eliminados correctamente" << endl;
 
     for (const string& palabra : palabrasABuscar) {
         string resultado;
@@ -208,8 +207,8 @@ void eliminarPorPalabras(ListaDobleEnlazada& lista) {
 
 
 
-void cambiarPosition(ListaDobleEnlazada& lista, int posicionInicial, int nuevaPosicion) {
-    int contador = lista.contador; // Esto asume que tienes un miembro "contador" en la clase ListaDobleEnlazada
+void cambiarPosition(ListaDobleEnlazada& lista, int posicionInicial, int nuevaPosicion) { //cambiar la relavancia de cada elemento de la lista
+    int contador = lista.contador; 
     
     // Verificar si las posiciones son válidas
     if (posicionInicial <= 0 || posicionInicial > contador || posicionInicial-nuevaPosicion <=0 || posicionInicial-nuevaPosicion>contador ) {
@@ -225,32 +224,20 @@ int main() {
     
     ListaDobleEnlazada lista;
 
-    insertar(lista, "Hola mundo");
-    insertar(lista, "Hola gente");
-    insertar(lista, "c");
-    insertar(lista, "d");
-    insertar(lista, "e");
-    insertar(lista, "f");
+    insertar(lista, "Descubren Nueva Especie de Mariposa Bioluminiscente en la Selva Amazónica");
+    insertar(lista, "Investigadores Desarrollan Vacuna Eficaz contra la Alergia al Polen");
+    insertar(lista, "Empresa de Tecnología Anuncia Avances en la Creación de Robots Autónomos");
+    insertar(lista, "Estudio Revela que el Consumo de Chocolate Oscuro Está Relacionado con la Felicidad");
+    insertar(lista, "Exploradores Descubren Antigua Ciudad Submarina en las Costas del Mediterráneo");
+    insertar(lista, "Artista Local Realiza Exhibición de Esculturas Gigantes Hechas de Material Reciclado");
 
     getAll(lista);
     cout << endl;
-    
-    cambiarPosition(lista,2,-2);
+
+    buscarPorPalabras(lista);
 
     getAll(lista);
     cout << endl;
-    lista.eliminar("f");
-    getAll(lista);
-
-    cambiarPosition(lista,6,-2);
-
-    getAll(lista);
-    cout << endl;
-    topfive(lista);
-
-    
-
-    
     
 
     
