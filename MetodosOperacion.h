@@ -2,54 +2,123 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include "lista.h"
+#include <unordered_set>
 
-top5();{ // Mostrar el top 5 de titulares por relevancia
+void insertar(ListaDobleEnlazada &lista, const string &dato){ //insertar dato por dato
+   lista.agregar(dato);
+   lista.contador++;
+   return;
+}
+
+void topfive(ListaDobleEnlazada& lista){ //obtener top 5 de los elementos
+   cout << "Top 5 elementos más relevantes:" << endl;
+   lista.top5();
+   return;
+}
+
+void getAll(ListaDobleEnlazada& lista){ //mostraar todos los elementos de la lista
+   cout << "Todos los elementos de la lista:" << endl;
+   lista.recorrer();
+   return;
+}
+
+void buscarPorPalabras(ListaDobleEnlazada& lista) {
+    vector<string> palabrasABuscar;
+
+    cout << "Ingrese las palabras que desea buscar (terminar con 'Listo'):" << endl;
+    string palabra;
+    while (cin >> palabra && palabra != "Listo") {
+        palabrasABuscar.push_back(palabra);
+    }
+
+    vector<string> resultados;  // Almacenar resultados
+
+    for (const string& palabra : palabrasABuscar) {
+        vector<string> resultadosParciales;  // Resultados para esta palabra
+        lista.buscar(palabra, resultadosParciales);
+
+        // Agregar los resultados parciales a resultados, evitando duplicados
+        for (const string& resultadoParcial : resultadosParciales) {
+            bool yaAgregado = false;
+            for (const string& resultadoExistente : resultados) {
+                if (resultadoParcial == resultadoExistente) {
+                    yaAgregado = true;
+                    break;
+                }
+            }
+            if (!yaAgregado) {
+                resultados.push_back(resultadoParcial);
+            }
+        }
+    }
     
-    //Métodos necesarios de la lista
 
-    getNext(); // recorrer la lista
-    searchPosition(int position); // buscar que esté el titular entre los primeros 5 titulares
-    mostrarTitular(string pData); // mostrar estos titulares
+    if (resultados.empty()) {
+        cout << "No se encontraron elementos con las palabras dadas" << endl;
+    } else {
+        cout << "Elementos encontrados:" << endl;
+        for (const string& resultado : resultados) {
+            cout << resultado << endl;
+        }
+    }
 }
+
+
+void eliminarPorPalabras(ListaDobleEnlazada& lista) { //pedir al usuario palabra por palabra una lista de estas para eliminar elementos que las contengan
+    vector<string> palabrasABuscar;
+
+    cout << "Ingrese las palabras que desea buscar (terminar con 'Listo'):" << endl;
+    string palabra;
+    while (cin >> palabra && palabra != "Listo") {
+        palabrasABuscar.push_back(palabra);
+    }
+
+    vector<string> resultados;  // Almacenar resultados
+
+    for (const string& palabra : palabrasABuscar) {
+        vector<string> resultadosParciales;  // Resultados para esta palabra
+        lista.buscar(palabra, resultadosParciales);
+
+        // Agregar los resultados parciales a resultados, evitando duplicados
+        for (const string& resultadoParcial : resultadosParciales) {
+            bool yaAgregado = false;
+            for (const string& resultadoExistente : resultados) {
+                if (resultadoParcial == resultadoExistente) {
+                    yaAgregado = true;
+                    break;
+                }
+            }
+            if (!yaAgregado) {
+                resultados.push_back(resultadoParcial);
+            }
+        }
+    }
     
 
-
-mostrarTodoLosTitulares();{ // Mostrar todos los titulares por relevancia
-
-    //Métodos necesarios de la lista
-
-    getNext(); // recorrer la lista
-    mostrarTitular(string pData); // mostrar toda la lista de titulares
+    if (resultados.empty()) {
+        cout << "No se encontraron elementos con las palabras dadas" << endl;
+    } else {
+        cout << "Elementos eliminados correctamente" << endl;
+        for (const string& resultado : resultados) {
+            lista.eliminar(resultado);
+        }
+    }
 }
 
 
-mostrarTitulares(string pWords);{ // Mostrar todos los titulares según filtro hecho con base a palabras que indique el usuario
 
-    //Métodos necesarios de la lista
+void cambiarPosition(ListaDobleEnlazada& lista, int posicionInicial, int nuevaPosicion) { //cambiar la relavancia de cada elemento de la lista
+    int contador = lista.contador; 
+    
+    // Verificar si las posiciones son válidas
+    if (posicionInicial <= 0 || posicionInicial > contador || posicionInicial-nuevaPosicion <=0 || posicionInicial-nuevaPosicion>contador ) {
+        cout << "Reubicación inválida." << endl;
+        return;
+    }
 
-    getNext(); // recorrer la lista
-    mostrarTitular(string pData); // mostrar toda la lista de titulares que cumplen con las palabras 
-}
-
-
-eliminarTitulares(string pWords);{ // Eliminar todos los titulares según filtro hecho con base a palabras que indique el usuario
-
-    //Métodos necesarios de la lista
-
-    getNext(); // recorrer la lista
-    remove(string pData); // eliminar aquellos titulres que contengan las palabras brindadas
-}
-
-
-modificarPosiciones(int actualPosition, int newPosition);{  // Modificar posiciones de titulares según indique el usuario 
-
-    //Métodos necesarios de la lista
-
-    getNext(); // recorrer la lista
-    getPrevius(); // devolverse en la lista en caso de querer aumentar de posición de una titular
-    remove(string pData); // remover los titulares necesarios para acomodarlos a como quiere el cliente
-    agregarTitular(string pData, int position); //depende del lugar donde se necesite insertar el titular e insertar los demás en órden según la posicion del titular modificado
-    mostrarTitular(string pData); // mostrar al usuario el cambio hecho en el órden de los titulares
+    lista.reubicar(posicionInicial, nuevaPosicion);
 }
 
 
