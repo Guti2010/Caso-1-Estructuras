@@ -6,9 +6,8 @@
 
 using namespace std;
 
-
-
-int main() {
+int main()
+{
     ListaDobleEnlazada lista;
     insertar(lista, "Descubren Nueva Especie de Mariposa Bioluminiscente en la Selva Amazónica");
     insertar(lista, "Investigadores Desarrollan Vacuna Eficaz contra la Alergia al Polen");
@@ -33,7 +32,6 @@ int main() {
     cout << endl;
     getAll(lista);
     cout << endl;
-    reubicar(lista,1,-3);
+    reubicar(lista, 1, -3);
     getAll(lista);
-     
 }
