@@ -23,20 +23,22 @@ int main() {
     insertar(lista, "Artista Urbano Transforma Calles Grises en Obras de Arte a Gran Escala");
     insertar(lista, "Descubren Antiguo Manuscrito que Revela Secretos de una Civilización Perdida");
 
-    topfive(lista);
-    cout << endl;
     getAll(lista);
+    cout << endl;
+    reubicar(lista,4,3);
+    getAll(lista);
+    cout << endl;
+    buscarPorPalabras(lista);
     cout << endl;
     eliminarPorPalabras(lista);
     cout << endl;
     getAll(lista);
-    cambiarPosition(lista,3,-2);
     cout << endl;
+    reubicar(lista,4,3);
     getAll(lista);
-    cambiarPosition(lista,4,+3);
-    cout << endl;
-    getAll(lista);
+    
 
+    
     
     
 

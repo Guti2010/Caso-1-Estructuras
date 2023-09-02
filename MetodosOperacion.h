@@ -14,13 +14,29 @@ void insertar(ListaDobleEnlazada &lista, const string &dato){ //insertar dato po
 
 void topfive(ListaDobleEnlazada& lista){ //obtener top 5 de los elementos
    cout << "Top 5 elementos más relevantes:" << endl;
-   lista.top5();
-   return;
+   vector<string> elementosLista;
+   lista.recorrer(elementosLista);
+   int lugar = 0;
+   for (const string& elemento : elementosLista){
+    lugar++;
+    if (lugar>5){
+        return;
+    }
+    
+    cout << lugar << ". " << elemento << endl;
+   }
+   
 }
 
 void getAll(ListaDobleEnlazada& lista){ //mostraar todos los elementos de la lista
    cout << "Todos los elementos de la lista:" << endl;
-   lista.recorrer();
+   vector<string> elementosLista;
+   lista.recorrer(elementosLista);
+   int lugar = 0;
+   for (const string& elemento : elementosLista ){
+    lugar++;
+    cout << lugar << ". " << elemento << endl;
+   }
    return;
 }
 
@@ -32,31 +48,13 @@ void buscarPorPalabras(ListaDobleEnlazada& lista) {
     while (cin >> palabra && palabra != "Listo") {
         palabrasABuscar.push_back(palabra);
     }
-
     vector<string> resultados;  // Almacenar resultados
 
-    for (const string& palabra : palabrasABuscar) {
-        vector<string> resultadosParciales;  // Resultados para esta palabra
-        lista.buscar(palabra, resultadosParciales);
-
-        // Agregar los resultados parciales a resultados, evitando duplicados
-        for (const string& resultadoParcial : resultadosParciales) {
-            bool yaAgregado = false;
-            for (const string& resultadoExistente : resultados) {
-                if (resultadoParcial == resultadoExistente) {
-                    yaAgregado = true;
-                    break;
-                }
-            }
-            if (!yaAgregado) {
-                resultados.push_back(resultadoParcial);
-            }
-        }
-    }
-    
+    lista.buscar(palabrasABuscar,resultados,1,0);
 
     if (resultados.empty()) {
         cout << "No se encontraron elementos con las palabras dadas" << endl;
+
     } else {
         cout << "Elementos encontrados:" << endl;
         for (const string& resultado : resultados) {
@@ -65,42 +63,23 @@ void buscarPorPalabras(ListaDobleEnlazada& lista) {
     }
 }
 
-
 void eliminarPorPalabras(ListaDobleEnlazada& lista) { //pedir al usuario palabra por palabra una lista de estas para eliminar elementos que las contengan
     vector<string> palabrasABuscar;
 
-    cout << "Ingrese las palabras que desea buscar (terminar con 'Listo'):" << endl;
+    cout << "Ingrese las palabras que desea buscar para eliminar (terminar con 'Listo'):" << endl;
     string palabra;
     while (cin >> palabra && palabra != "Listo") {
         palabrasABuscar.push_back(palabra);
     }
-
     vector<string> resultados;  // Almacenar resultados
 
-    for (const string& palabra : palabrasABuscar) {
-        vector<string> resultadosParciales;  // Resultados para esta palabra
-        lista.buscar(palabra, resultadosParciales);
-
-        // Agregar los resultados parciales a resultados, evitando duplicados
-        for (const string& resultadoParcial : resultadosParciales) {
-            bool yaAgregado = false;
-            for (const string& resultadoExistente : resultados) {
-                if (resultadoParcial == resultadoExistente) {
-                    yaAgregado = true;
-                    break;
-                }
-            }
-            if (!yaAgregado) {
-                resultados.push_back(resultadoParcial);
-            }
-        }
-    }
-    
+    lista.buscar(palabrasABuscar,resultados,1,0);
 
     if (resultados.empty()) {
         cout << "No se encontraron elementos con las palabras dadas" << endl;
+
     } else {
-        cout << "Elementos eliminados correctamente" << endl;
+        cout << "Elemnetos eliminados correctamente" << endl;
         for (const string& resultado : resultados) {
             lista.eliminar(resultado);
         }
@@ -108,8 +87,7 @@ void eliminarPorPalabras(ListaDobleEnlazada& lista) { //pedir al usuario palabra
 }
 
 
-
-void cambiarPosition(ListaDobleEnlazada& lista, int posicionInicial, int nuevaPosicion) { //cambiar la relavancia de cada elemento de la lista
+void reubicar(ListaDobleEnlazada& lista, int posicionInicial, int nuevaPosicion) { //cambiar la relavancia de cada elemento de la lista
     int contador = lista.contador; 
     
     // Verificar si las posiciones son válidas
@@ -118,7 +96,10 @@ void cambiarPosition(ListaDobleEnlazada& lista, int posicionInicial, int nuevaPo
         return;
     }
 
-    lista.reubicar(posicionInicial, nuevaPosicion);
+    vector<string> rellenar;
+    string titular = lista.buscar(rellenar,rellenar,2,posicionInicial);
+    lista.eliminar(titular);
+    lista.insertar(titular,posicionInicial-nuevaPosicion);
 }
 
 

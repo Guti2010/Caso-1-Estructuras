@@ -5,7 +5,6 @@
 #include <vector>
 #include "nodo.h"
 #include <algorithm>
-#include <unordered_set>
 using namespace std;
 
 class ListaDobleEnlazada {
@@ -31,30 +30,72 @@ public:
        return; 
     }
 
-    bool buscar(const string& palabraABuscar, vector<string>& resultados) {
-        Nodo* actual = cabeza;
-        bool encontrado = false;  // Indica si se encontró al menos un resultado
-        unordered_set<string> elementosAgregados;  // Utilizamos un unordered_set para evitar duplicados
-
-        while (actual) {
-            if (actual->dato.find(palabraABuscar) != string::npos) {
-                if (elementosAgregados.find(actual->dato) == elementosAgregados.end()) {
-                    resultados.push_back(actual->dato);
-                    elementosAgregados.insert(actual->dato);
+    string buscar(vector<string>& palabrasABuscar, vector<string>& resultados, int modoBusqueda, int posicion) {
+          // Indica si se encontró al menos un resultado
+        if (modoBusqueda==1) {            
+            for (const string& palabra : palabrasABuscar) {
+                Nodo* actual = cabeza;
+                bool encontrado = false;
+                vector<string> resultadosParciales;  // Resultados para esta palabra
+                // Agregar los resultados parciales a resultados, evitando duplicados
+                while (actual) {
+                    if (actual->dato.find(palabra) != string::npos) {
+                        resultadosParciales.push_back(actual->dato);
+                        encontrado = true;
+                    }
+                    actual = actual->siguiente;
                 }
-                encontrado = true;
+
+                if (!encontrado) {
+                    cout << "No se encontraron elementos con la palabra '" << palabra << "'." << endl;
+                }
+
+                for (const string& resultadoParcial : resultadosParciales) {
+                    bool yaAgregado = false;
+                    for (const string& resultadoExistente : resultados) {
+                        if (resultadoParcial == resultadoExistente) {
+                            yaAgregado = true;
+                            break;
+                        }
+                    }
+                    if (!yaAgregado) {
+                        resultados.push_back(resultadoParcial);
+                    }
+                }
             }
-            actual = actual->siguiente;
+            return "";
         }
+        if (modoBusqueda==2){
+            int index = 1;  // La cabeza equivale a la posición 1
+            Nodo* actual = cabeza;
 
-        if (!encontrado) {
-            cout << "No se encontraron elementos con la palabra '" << palabraABuscar << "'." << endl;
+            while (actual && index < posicion) {
+                actual = actual->siguiente;
+                index++;
+            }
+
+            if (actual && index == posicion) {
+                return actual->dato;
+             }
         }
-
-        return encontrado;
+        return "" ;
     }
 
+    string buscarEnPosicion(int posicion) {
+        int contador = 1;  // La cabeza equivale a la posición 1
+        Nodo* actual = cabeza;
 
+        while (actual && contador < posicion) {
+            actual = actual->siguiente;
+            contador++;
+        }
+
+        if (actual && contador == posicion) {
+            return actual->dato;
+        } else {
+            return "";  // Devolver una cadena vacía si la posición no existe
+        }
+    }
 
     bool eliminar(const string& valor) {
         Nodo* actual = cabeza;
@@ -80,97 +121,47 @@ public:
         return false;
     }
 
-    void recorrer() {
+    void recorrer(vector<string>& elementos) {
         Nodo* actual = cabeza;
-        contador = 0;
-        while (actual) {
+        while (actual ) {
             contador++;
-            cout << contador << ". " << actual->dato << endl;
+            elementos.push_back(actual->dato);
             actual = actual->siguiente;
         }
+        
     }
 
-    void top5() {
+    void insertar( const string& valor, int posicion) {
+        contador++;
+        int contador2 = 1;
         Nodo* actual = cabeza;
-        int position = 0;
-        while (position<5) {
-            position++;
-            cout << position << ". " << actual->dato << endl;
-            actual = actual->siguiente;
-        }
-    }
+        posicion--;
+        // Crear un nuevo nodo con el valor dado
+        Nodo* nuevoNodo = new Nodo(valor);
 
-    void reubicar(int posicionInicial, int offset) {
-        int nuevaPosicion = posicionInicial - offset;
-        Nodo* actual = cabeza;
-        for (int i = 1; i < posicionInicial; ++i) {
-            actual = actual->siguiente;
-        }
-
-        Nodo* nodoMovido = actual;
-        Nodo* nodoAnterior = actual->anterior;
-        Nodo* nodoSiguiente = actual->siguiente;
-
-        if (posicionInicial - offset == contador) {
-            Nodo* nodoAnterior = actual->anterior;
-            Nodo* nodoSiguiente = actual->siguiente;
-
-            // Si ya es el último nodo, no es necesario hacer nada
-            if (nodoSiguiente) {
-                if (nodoAnterior) {
-                    nodoAnterior->siguiente = nodoSiguiente;
-                } else {
-                    cabeza = nodoSiguiente;
-                }
-                nodoSiguiente->anterior = nodoAnterior;
-
-                // Mover el nodo al final de la lista
-                actual->anterior = cola;
-                actual->siguiente = nullptr;
-                cola->siguiente = actual;
-                cola = actual;
-            }
-
+        // Si la posición deseada es 0, establecer el nuevo nodo como la cabeza
+        if (posicion == 0) {
+            nuevoNodo->siguiente = cabeza;
+            cabeza->anterior = nuevoNodo;
+            cabeza = nuevoNodo;
+            contador++;
             return;
         }
 
-        if (nodoAnterior) {
-            nodoAnterior->siguiente = nodoSiguiente;
-        } else {
-            cabeza = nodoSiguiente;
-        }
-
-        if (nodoSiguiente) {
-            nodoSiguiente->anterior = nodoAnterior;
-        } else {
-            cola = nodoAnterior;
-        }
-
-        actual = cabeza;
-        for (int i = 1; i < nuevaPosicion; ++i) {
+        while (actual && contador2 < posicion) {
             actual = actual->siguiente;
+            contador2++;
         }
-
-        if (actual) {
-            nodoMovido->anterior = actual->anterior;
-            nodoMovido->siguiente = actual;
-            if (actual->anterior) {
-                actual->anterior->siguiente = nodoMovido;
-            } else {
-                cabeza = nodoMovido;
-            }
-            actual->anterior = nodoMovido;
+        // Conectar el nuevo nodo con los nodos adyacentes
+        nuevoNodo->siguiente = actual->siguiente;
+        nuevoNodo->anterior = actual;
+        if (actual->siguiente) {
+            actual->siguiente->anterior = nuevoNodo;
         }
+        actual->siguiente = nuevoNodo;
     }
 
     
 
-    ~ListaDobleEnlazada() { //getNext
-        Nodo* actual = cabeza;
-        while (actual) {
-            Nodo* siguiente = actual->siguiente;
-            delete actual;
-            actual = siguiente;
-        }
-    }
+    
 };
