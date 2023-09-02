@@ -22,7 +22,6 @@ void topfive(ListaDobleEnlazada& lista){ //obtener top 5 de los elementos
     if (lugar>5){
         return;
     }
-    
     cout << lugar << ". " << elemento << endl;
    }
    

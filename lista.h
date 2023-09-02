@@ -16,6 +16,7 @@ public:
     ListaDobleEnlazada() : cabeza(nullptr), cola(nullptr) {}
 
     int contador = 0;
+    
     void agregar(const string& valor) {
         Nodo* nuevoNodo = new Nodo(valor);
         if (!cabeza) {
@@ -81,22 +82,6 @@ public:
         return "" ;
     }
 
-    string buscarEnPosicion(int posicion) {
-        int contador = 1;  // La cabeza equivale a la posición 1
-        Nodo* actual = cabeza;
-
-        while (actual && contador < posicion) {
-            actual = actual->siguiente;
-            contador++;
-        }
-
-        if (actual && contador == posicion) {
-            return actual->dato;
-        } else {
-            return "";  // Devolver una cadena vacía si la posición no existe
-        }
-    }
-
     bool eliminar(const string& valor) {
         Nodo* actual = cabeza;
         while (actual) {
@@ -160,8 +145,4 @@ public:
         }
         actual->siguiente = nuevoNodo;
     }
-
-    
-
-    
 };
