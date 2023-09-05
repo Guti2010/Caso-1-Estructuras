@@ -5,12 +5,25 @@
 #include <vector>
 #include "lista.h"
 #include <unordered_set>
+#include "news.cpp"
+
 
 void insertar(ListaDobleEnlazada &lista, const string &dato)
 { // insertar dato por dato
     lista.agregar(dato);
     lista.contador++;
     return;
+}
+
+void palabraClave(ListaDobleEnlazada &lista,const string &palabra ){
+    Newsapi newsapi;
+    vector<News *> allrecords = newsapi.getRecords(palabra);
+    for (News* record : allrecords) {
+        // Verificar si record no es nulo (por seguridad)
+        if (record != nullptr) {
+            insertar(lista,record->getTitle());
+        }
+    }
 }
 
 void topfive(ListaDobleEnlazada &lista)
