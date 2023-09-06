@@ -138,7 +138,6 @@ public:
         Nodo *actual = cabeza;
         while (actual)
         {
-            contador++;
             elementos.push_back(actual->dato);
             actual = actual->siguiente;
         }

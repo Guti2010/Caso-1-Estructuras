@@ -116,7 +116,7 @@ void eliminarPorPalabras(ListaDobleEnlazada &lista)
 void reubicar(ListaDobleEnlazada &lista, int posicionInicial, int nuevaPosicion)
 { // cambiar la relavancia de cada elemento de la lista
     int contador = lista.contador;
-
+    cout << contador << endl;
     // Verificar si las posiciones son válidas
     if (posicionInicial <= 0 || posicionInicial > contador || posicionInicial - nuevaPosicion <= 0 || posicionInicial - nuevaPosicion > contador)
     {

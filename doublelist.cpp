@@ -20,6 +20,6 @@ int main()
     cout << endl;
     getAll(lista);
     cout << endl;
-    reubicar(lista, 1, -3);
+    reubicar(lista, 5, -5);
     getAll(lista);
 }
