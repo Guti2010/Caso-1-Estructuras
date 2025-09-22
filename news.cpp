@@ -84,7 +84,7 @@ public:
         curl = curl_easy_init();
 
         // build the URL with the proper entryid
-        string url = "https://newsapi.org/v2/everything?q="+pKeyWord+"&from=2023-09-03&sortBy=popularity&apiKey=e75d9b1446ce4c88b215b389f486f867";
+        string url = "https://newsapi.org/v2/everything?q="+pKeyWord+"&from=2025-09-01&sortBy=popularity&apiKey=d702dbf75b314639acaec2c5d4cb2755";
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36");
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
